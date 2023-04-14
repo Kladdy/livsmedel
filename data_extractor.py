@@ -5,9 +5,6 @@ import os
 import sys
 import scipy.optimize as optimize
 
-def warn_sound():
-    sys.stdout.write('\a')
-
 # kwargs are passed to the reading of the file
 class NutritionDataSource:
     def __init__(self, filepath: str, **kwargs):

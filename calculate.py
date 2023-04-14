@@ -1,4 +1,8 @@
 from data_extractor import NutritionDataSource, NutritionContent, solve_for_recipe
+import inquirer
+import tools
+
+tools.print_title()
 
 # Define variables
 filepath = "data/LivsmedelsDB_202304122217.xlsx"
@@ -7,7 +11,19 @@ filepath = "data/LivsmedelsDB_202304122217.xlsx"
 data = NutritionDataSource(filepath, header=2)
 
 # Define list of ingridients
-ingridients = ["mjölk", "vetemjöl", "ägg", "rapsolja", "salt"]
+questions = [
+    inquirer.Text(
+        "ingridients",
+        message=f"Ange ingredienserna som finns i produkten, separerade med kommatecken",
+    ),
+]
+
+answers = inquirer.prompt(questions)
+ingridients_csl = answers["ingridients"]
+ingridients = [ingridient.strip() for ingridient in ingridients_csl.split(",")]
+if len(ingridients) == 0:
+    print("Du måste ange minst en ingrediens.")
+    exit()
 df_nutrition = data.get_nutrition_data(ingridients)
 
 # Query content
